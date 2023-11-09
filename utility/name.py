@@ -15,7 +15,6 @@ class Name(Field):
             while True:
                 if not value:
                     raise ValueError
-                    # value = input("The name field cannot be empty. Try again: ")
                 else:
                     return func(self, value)
         return inner

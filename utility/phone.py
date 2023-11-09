@@ -14,7 +14,6 @@ class Phone(Field):
                 value = value.strip().removeprefix("+").replace("(", "").replace(")", "").replace("-", "").replace(" ", "")
                 if not value.isnumeric():
                     raise ValueError
-                    # value = input("Invalid phone number. Try again: ")
                 else:
                     return func(self, value)    
         return inner
