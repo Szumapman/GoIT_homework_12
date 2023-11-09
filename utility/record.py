@@ -7,9 +7,9 @@ class Record:
     Record class represents a single address book record consisting of name, phone list and email list
     """
     def __init__(self, name: Name, phones=[], emails=[]) -> None:
-        self.name = name
-        self.phones = phones
-        self.emails = emails
+        self._name = name
+        self._phones = phones
+        self._emails = emails
         
     # Getter for name
     @property
@@ -87,3 +87,6 @@ class Record:
             emails_str += f"{i}) {email};\n"
             i += 1
         return emails_str
+    
+    def __repr__(self) -> str:
+        return f"{self._name}"

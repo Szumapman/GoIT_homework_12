@@ -22,8 +22,7 @@ def input_error(func: Callable):
     def wrapper(*args):
         while True:
             try:
-                func(*args)
-                break
+                return func(*args)
             except ValueError:
                 if func.__name__ == "add_name":
                     print("The name field cannot be empty, try again.")
@@ -34,7 +33,7 @@ def input_error(func: Callable):
     return wrapper   
 
 @input_error
-def add_name(addresbook):
+def add_name(addresbook: AddresBook) -> Name:
     while True:
         name = input("Name: ").strip().capitalize()
         if name in addresbook.keys():
@@ -76,20 +75,16 @@ def create_record(addresbook):
                 if answer == "Y" or answer == "YES":
                     continue
                 break
-        break      
-    addresbook.add_record(Record(name, phones, emails))
-
-# edit existing name 
-def edit_name(addresbook, record):
-    while True:
-        new_name = input(f"Type new name for contact {record.name}: ")
-        if new_name in addresbook.keys():
-            print(F"Contact {new_name} already exists. Choose another name.")
-            continue
-        new_name = Name(new_name)
-        addresbook.add_record(Record(new_name, record.phones, record.emails))  
-        addresbook.pop(record.name.value)                 
         break
+    addresbook.add_record(Record(name, phones, emails))
+    
+
+# edit existing name
+def edit_name(addresbook, record):
+    print(f"Type new name for contact {record.name}")
+    new_name = add_name(addresbook)
+    addresbook.add_record(Record(new_name, record.phones, record.emails))  
+    addresbook.pop(record.name.value)                 
 
 # help menu function to choose email or phone 
 def item_selection(record, data_list, show):

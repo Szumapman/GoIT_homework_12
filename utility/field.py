@@ -5,7 +5,7 @@ class Field:
     def __init__(self, value="") -> None:
         self._value = value
     
-    # overridden method __str__    
+    # overridden method __repr__    
     def __repr__(self) -> str:
         return f"{self._value}"
     
