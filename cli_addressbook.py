@@ -29,6 +29,8 @@ def input_error(func: Callable):
                     print("The name field cannot be empty, try again.")
                 if func.__name__ == "add_phone":
                     print("Invalid phone number, try again.")
+                if func.__name__ == "add_email":
+                    print("Invalid email, try again.")
     return wrapper   
 
 @input_error
@@ -43,6 +45,10 @@ def add_name(addresbook):
 @input_error
 def add_phone():
     return Phone(input("phone: "))
+
+@input_error
+def add_email():
+    return Email(input("email: "))
 
 # creare record in addresbook
 def create_record(addresbook):
@@ -65,12 +71,7 @@ def create_record(addresbook):
         answer = input("Type Y (yes) if you want to add email: ").strip().upper()
         if answer == "Y":
             while True:
-                try:
-                    email = Email(input("email: "))
-                    emails.append(email)
-                except ValueError:
-                    print("Invalid email, try again.")
-                    continue
+                emails.append(add_email())
                 answer = input("Type Y (yes) if you want to add another email: ").strip().upper()
                 if answer == "Y" or answer == "YES":
                     continue
@@ -102,7 +103,7 @@ def item_selection(record, data_list, show):
     except ValueError:
         return -1
 
-# zmiana telefonu lub emaila    
+# change of phone or email    
 def change_data(record, type):
     if type == "phone":
         data_list = record.phones

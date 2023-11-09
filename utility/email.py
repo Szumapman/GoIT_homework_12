@@ -18,7 +18,6 @@ class Email(Field):
                     return func(self, email)
                 else:
                     raise ValueError
-                    # email = input("Invalid email, try again: ")   
         return inner  
 
     @_value_error
