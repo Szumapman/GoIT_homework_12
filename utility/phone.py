@@ -7,19 +7,22 @@ class Phone(Field):
     Args:
         Field (class): parent class
     """
-    def __init__(self, value: str) -> None:       
-        self.value = value
-    
     # function used as a decorator to catch errors when value is setting
     def _value_error(func):
         def inner(self, value):
             while True:
                 value = value.strip().removeprefix("+").replace("(", "").replace(")", "").replace("-", "").replace(" ", "")
                 if not value.isnumeric():
-                    value = input("Invalid phone number. Try again: ")
+                    raise ValueError
+                    # value = input("Invalid phone number. Try again: ")
                 else:
                     return func(self, value)    
-        return inner 
+        return inner
+    
+    @_value_error
+    def __init__(self, value: str) -> None:       
+        self._value = value
+     
     
     # Getter for value
     @property

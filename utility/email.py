@@ -9,9 +9,6 @@ class Email(Field):
     Args:
         Field (class): parent class
     """
-    def __init__(self, value: str) -> None:
-        self.value = value
-
     # function used as a decorator to catch errors when value is setting
     def _value_error(func):
         def inner(self, email):
@@ -20,9 +17,14 @@ class Email(Field):
                 if re.search(r"^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$", email):
                     return func(self, email)
                 else:
-                    email = input("Invalid email, try again: ")   
-        return inner    
-    
+                    raise ValueError
+                    # email = input("Invalid email, try again: ")   
+        return inner  
+
+    @_value_error
+    def __init__(self, value: str) -> None:
+        self._value = value
+
     # Getter for value
     @property
     def value(self):

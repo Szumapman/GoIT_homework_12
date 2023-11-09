@@ -1,4 +1,5 @@
 import sys
+from typing import Callable
 from utility.addressbook import AddresBook
 from utility.record import Record
 from utility.name import Name
@@ -17,14 +18,36 @@ def get_edit_handler(command):
 def cli_addresbook_exit(*args):
     sys.exit("Good bye!")
 
-# creare record in addresbook
-def create_record(addresbook):
+def input_error(func: Callable):
+    def wrapper(*args):
+        while True:
+            try:
+                func(*args)
+                break
+            except ValueError:
+                if func.__name__ == "add_name":
+                    print("The name field cannot be empty, try again.")
+                if func.__name__ == "add_phone":
+                    print("Invalid phone number, try again.")
+    return wrapper   
+
+@input_error
+def add_name(addresbook):
     while True:
-        name = input("Name: ").strip().title()
+        name = input("Name: ").strip().capitalize()
         if name in addresbook.keys():
             print(F"Contact {name} already exists. Choose another name.")
             continue
-        name = Name(name)
+        return Name(name)
+
+@input_error
+def add_phone():
+    return Phone(input("phone: "))
+
+# creare record in addresbook
+def create_record(addresbook):
+    while True:
+        name = add_name(addresbook)
         phones = []
         emails = []
         break
@@ -32,8 +55,7 @@ def create_record(addresbook):
         answer = input("Type Y (yes) if you want to add phone number: ").strip().upper()
         if answer == "Y":
             while True:
-                phones.append(Phone(input("phone: ")))
-                
+                phones.append(add_phone())                
                 answer = input("Type Y (yes) if you want to add another phone number: ").strip().upper()
                 if answer == "Y" or answer == "YES":
                     continue
