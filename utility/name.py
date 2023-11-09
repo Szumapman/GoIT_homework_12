@@ -8,20 +8,23 @@ class Name(Field):
     Args:
         Field (class): parent class
     """
-    def __init__(self, value: str) -> None:
-        self.value = value
-        
-        
+    
     # function used as a decorator to catch errors when value is setting
     def _value_error(func):
         def inner(self, value):
             while True:
                 if not value:
-                    value = input("The name field cannot be empty. Try again: ")
+                    raise ValueError
+                    # value = input("The name field cannot be empty. Try again: ")
                 else:
                     return func(self, value)
         return inner
     
+    @_value_error
+    def __init__(self, value: str) -> None:
+        self._value = value
+
+            
     # Getter for value
     @property
     def value(self):

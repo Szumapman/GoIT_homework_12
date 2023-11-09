@@ -3,7 +3,7 @@ class Field:
     class defining the basic properties of a field
     """
     def __init__(self, value="") -> None:
-        self.value = value
+        self._value = value
     
     # overridden method __str__    
     def __repr__(self) -> str:
