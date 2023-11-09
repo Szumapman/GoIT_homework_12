@@ -35,48 +35,59 @@ def input_error(func: Callable):
 @input_error
 def add_name(addresbook: AddresBook) -> Name:
     while True:
-        name = input("Name: ").strip().capitalize()
+        name = input("Type name or <<< if you want to cancel: ").strip().capitalize()
         if name in addresbook.keys():
             print(F"Contact {name} already exists. Choose another name.")
             continue
+        elif name == "<<<":
+            return None
         return Name(name)
 
 @input_error
 def add_phone():
-    return Phone(input("phone: "))
+    phone = input("Type phone or <<< if you want to cancel: ")
+    if phone == "<<<":
+        return None
+    return Phone(phone)
 
 @input_error
 def add_email():
-    return Email(input("email: "))
+    email = input("Type email or <<< if you want to cancel: ")
+    if email == "<<<":
+        return None
+    return Email(email)
 
 # creare record in addresbook
 def create_record(addresbook):
-    while True:
-        name = add_name(addresbook)
+    name = add_name(addresbook)
+    if name is not None:
         phones = []
         emails = []
-        break
-    while True:
-        answer = input("Type Y (yes) if you want to add phone number: ").strip().upper()
-        if answer == "Y":
-            while True:
-                phones.append(add_phone())                
-                answer = input("Type Y (yes) if you want to add another phone number: ").strip().upper()
-                if answer == "Y" or answer == "YES":
-                    continue
-                break
-        break
-    while True:
-        answer = input("Type Y (yes) if you want to add email: ").strip().upper()
-        if answer == "Y":
-            while True:
-                emails.append(add_email())
-                answer = input("Type Y (yes) if you want to add another email: ").strip().upper()
-                if answer == "Y" or answer == "YES":
-                    continue
-                break
-        break
-    addresbook.add_record(Record(name, phones, emails))
+        while True:
+            answer = input("Type Y (yes) if you want to add phone number: ").strip().upper()
+            if answer == "Y":
+                while True:
+                    phone = add_phone()
+                    if phone is not None:
+                        phones.append(add_phone())                
+                        answer = input("Type Y (yes) if you want to add another phone number: ").strip().upper()
+                        if answer == "Y" or answer == "YES":
+                            continue
+                    break
+            break
+        while True:
+            answer = input("Type Y (yes) if you want to add email: ").strip().upper()
+            if answer == "Y":
+                while True:
+                    email = add_email()
+                    if email is not None:
+                        emails.append(add_email())
+                        answer = input("Type Y (yes) if you want to add another email: ").strip().upper()
+                        if answer == "Y" or answer == "YES":
+                            continue
+                    break
+            break
+        addresbook.add_record(Record(name, phones, emails))
     
 
 # edit existing name
@@ -114,17 +125,23 @@ def change_data(record, type):
                 answer = input(f"Contact {record.name} {type}s:\n{show}Do you want change it or add another? 1 chanege, 2 add, 3 delete: ")
                 if answer == "1":
                     if len(data_list) == 1:
-                        data_list[0] = add_email() if type == "email" else add_phone()
+                        data_to_add = add_email() if type == "email" else add_phone()
+                        if data_to_add is not None:
+                            data_list[0] = data_to_add
                         break
                     else:
                         number_to_change = item_selection(record, data_list, show)
                         if number_to_change == -1:
                             print("Wrong option, try again")
                             break                            
-                        data_list[number_to_change] = add_email() if type == "email" else add_phone()
+                        data_to_add = add_email() if type == "email" else add_phone()
+                        if data_to_add is not None:
+                            data_list[number_to_change] = data_to_add
                         break 
                 elif answer == "2":
-                    add_type(add_email() if type == "email" else add_phone())
+                    data_to_add = add_email() if type == "email" else add_phone()
+                    if data_to_add is not None:
+                        add_type(data_to_add)
                     break
                 elif answer == "3":
                     if len(data_list) == 1:
