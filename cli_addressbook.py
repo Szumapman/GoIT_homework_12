@@ -103,12 +103,10 @@ def change_data(record, type):
     if type == "phone":
         data_list = record.phones
         show = record.show_phones()
-        class_object = Phone
         add_type = record.add_phone
     elif type == "email":
         data_list = record.emails
         show = record.show_emails()
-        class_object = Email
         add_type = record.add_email
     while True:
         if len(data_list) > 0:
@@ -116,17 +114,17 @@ def change_data(record, type):
                 answer = input(f"Contact {record.name} {type}s:\n{show}Do you want change it or add another? 1 chanege, 2 add, 3 delete: ")
                 if answer == "1":
                     if len(data_list) == 1:
-                        data_list[0] = class_object(input(f"new {type}: "))
+                        data_list[0] = add_email() if type == "email" else add_phone()
                         break
                     else:
                         number_to_change = item_selection(record, data_list, show)
                         if number_to_change == -1:
                             print("Wrong option, try again")
                             break                            
-                        data_list[number_to_change] = class_object(input(f"new {type}: "))
+                        data_list[number_to_change] = add_email() if type == "email" else add_phone()
                         break 
                 elif answer == "2":
-                    add_type(input(f"new {type}: "))
+                    add_type(add_email() if type == "email" else add_phone())
                     break
                 elif answer == "3":
                     if len(data_list) == 1:
@@ -142,7 +140,7 @@ def change_data(record, type):
                 else:
                     print("Unrecognized command, try again.")
         else:
-            add_type(input(f"{type} to add: "))
+            add_type(add_email() if type == "email" else add_phone())
         break
     
 # init function for phone changed

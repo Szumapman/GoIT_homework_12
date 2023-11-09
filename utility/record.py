@@ -43,8 +43,8 @@ class Record:
         self._emails = emails
     
     # Add phone to phones list    
-    def add_phone(self, number):
-        self._phones.append(Phone(number))
+    def add_phone(self, phone: Phone):
+        self._phones.append(phone)
     
     # Remove phone from phones list
     def remove_phone(self, phone: Phone):
@@ -65,10 +65,9 @@ class Record:
         return phones_str
     
     # Add email to emails list
-    def add_email(self, email_str):
-        email = Email(email_str)
+    def add_email(self, email: Email):
         self._emails.append(email)
-        return True
+
 
     # Remove email from emails list
     def remove_email(self, email: Email):
