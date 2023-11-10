@@ -2,7 +2,7 @@ class Field:
     """
     class defining the basic properties of a field
     """
-    def __init__(self, value="") -> None:
+    def __init__(self, value=None) -> None:
         self._value = value
     
     # overridden method __repr__    
