@@ -5,6 +5,7 @@ from utility.record import Record
 from utility.name import Name
 from utility.phone import Phone
 from utility.email import Email
+from utility.birthday import Birthday
 
 # hendler for main menu
 def get_main_handler(command):
@@ -30,6 +31,8 @@ def input_error(func: Callable):
                     print("Invalid phone number, try again.")
                 if func.__name__ == "add_email":
                     print("Invalid email, try again.")
+                if func.__name__=="add_birthday":
+                    print("Invalid date format, try again.")
     return wrapper   
 
 @input_error
@@ -56,6 +59,13 @@ def add_email():
     if email == "<<<":
         return None
     return Email(email)
+
+@input_error
+def add_birthday():
+    birthday = input("Input the date of birth as day month year (e.g. 15-10-1985 or 15 10 1985) or <<< if you want to cancel: ")
+    if birthday == "<<<":
+        return None
+    return Birthday(birthday)
 
 # creare record in addresbook
 def create_record(addresbook):
@@ -87,7 +97,10 @@ def create_record(addresbook):
                             continue
                     break
             break
-        addresbook.add_record(Record(name, phones, emails))
+        answer = input("Type Y (yes) if you want to add birthday: ").strip().upper()
+        if answer == "Y":
+            birthday = add_birthday()
+        addresbook.add_record(Record(name, phones, emails, birthday))
     
 
 # edit existing name
@@ -220,6 +233,8 @@ def show_all(addresbook):
                 print(f"phones:\n{record.show_phones()}")
             if len(record.emails) > 0:
                 print(f"emails:\n{record.show_emails()}")
+            if record.birthday is not None:
+                print(f"birthday: {record.birthday}")
             i += 1           
              
 # dict for main menu handler

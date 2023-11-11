@@ -1,7 +1,7 @@
 from utility.name import Name
 from utility.phone import Phone
 from utility.email import Email
-from utility.birthday import Birthday
+# from utility.birthday import Birthday
 
 class Record:
     """
