@@ -75,13 +75,14 @@ def create_record(addresbook):
     if name is not None:
         phones = []
         emails = []
+        birthday = None
         while True:
             answer = input("Type Y (yes) if you want to add phone number: ").strip().upper()
             if answer == "Y":
                 while True:
                     phone = add_phone()
                     if phone is not None:
-                        phones.append(add_phone())                
+                        phones.append(phone)                
                         answer = input("Type Y (yes) if you want to add another phone number: ").strip().upper()
                         if answer == "Y" or answer == "YES":
                             continue
@@ -93,7 +94,7 @@ def create_record(addresbook):
                 while True:
                     email = add_email()
                     if email is not None:
-                        emails.append(add_email())
+                        emails.append(email)
                         answer = input("Type Y (yes) if you want to add another email: ").strip().upper()
                         if answer == "Y" or answer == "YES":
                             continue
@@ -254,6 +255,7 @@ def main():
     adressbook = AddresBook()
     while True:
         print("{:<20} | {:^10} | {:^10} | {:^10} | {:^10} | {:^10}".format("Type command (number): ","1 add", "2 edit", "3 delete", "4 show all", "0 exit"))
+
         option = input("> ").strip().lower()
         if option in MAIN_COMMANDS.keys():
             handler = get_main_handler(option)

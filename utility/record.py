@@ -1,7 +1,7 @@
 from utility.name import Name
 from utility.phone import Phone
 from utility.email import Email
-# from utility.birthday import Birthday
+from utility.birthday import Birthday   
 
 class Record:
     """
@@ -13,46 +13,32 @@ class Record:
         self._emails = emails
         self._birthday = birthday
         
+    # overridden method __repr__
+    def __repr__(self) -> str:
+        return f"{self._name}"
+       
+    # name section   
     # Getter for name
     @property
     def name(self):
         return self._name
-
-    # Getter for phones
-    @property
-    def phones(self):
-        return self._phones
-
-    # Getter for emails
-    @property
-    def emails(self):
-        return self._emails
-    
-    # Getter for birthday
-    @property
-    def birthday(self):
-        return self._birthday
     
     # Setter name
     @name.setter
     def name(self, name):
         self._name = name
     
+    # phones section 
+    # Getter for phones
+    @property
+    def phones(self):
+        return self._phones
+    
     # Setter phones
     @phones.setter
     def phones(self, phones):
         self._phones = phones
-       
-    # Setter emails
-    @emails.setter
-    def emails(self, emails):
-        self._emails = emails
-
-    # Setter birthday
-    @birthday.setter
-    def birthday(self, birthday):
-        self._birthday = birthday
-        
+            
     # Add phone to phones list    
     def add_phone(self, phone: Phone):
         self._phones.append(phone)
@@ -74,11 +60,21 @@ class Record:
             phones_str += f"{i}) {phone};\n"
             i += 1
         return phones_str
+
+    # emails section 
+    # Getter for emails
+    @property
+    def emails(self):
+        return self._emails
     
+    # Setter emails
+    @emails.setter
+    def emails(self, emails):
+        self._emails = emails
+            
     # Add email to emails list
     def add_email(self, email: Email):
         self._emails.append(email)
-
 
     # Remove email from emails list
     def remove_email(self, email: Email):
@@ -98,5 +94,14 @@ class Record:
             i += 1
         return emails_str
     
-    def __repr__(self) -> str:
-        return f"{self._name}"
+
+    # birthday section
+    # Getter for birthday
+    @property
+    def birthday(self):
+        return self._birthday
+     
+    # Setter birthday
+    @birthday.setter
+    def birthday(self, birthday):
+        self._birthday = birthday
