@@ -5,7 +5,7 @@ from utility.record import Record
 from utility.name import Name
 from utility.phone import Phone
 from utility.email import Email
-from utility.birthday import Birthday
+from utility.birthday import Birthday, FutureDateException
 
 # hendler for main menu
 def get_main_handler(command):
@@ -33,6 +33,8 @@ def input_error(func: Callable):
                     print("Invalid email, try again.")
                 if func.__name__=="add_birthday":
                     print("Invalid date format, try again.")
+            except FutureDateException:
+                print("You can't use a future date as a birthday, try again.")
     return wrapper   
 
 @input_error
@@ -174,11 +176,11 @@ def change_data(record, type):
         break
     
 # init function for phone changed
-def edit_phone(addresbook, record):
+def edit_phone(record):
     change_data(record, "phone")
 
 # init function for email changed
-def edit_email(addresbook, record):
+def edit_email(record):
     change_data(record, "email")
             
 # dict for menu edit handler
@@ -186,6 +188,7 @@ EDIT_COMMANDS = {
     "1": edit_name,
     "2": edit_phone,
     "3": edit_email,
+    "4": add_birthday
 }
 
 # record edit
@@ -198,7 +201,7 @@ def edit_record(addresbook: AddresBook):
             break
         print("Unknown name, try again")
     while True:
-        answer = input('What do you want to edit? Type: 1 name, 2 phone, 3 email, 0 back to main menu: ')
+        answer = input('What do you want to edit? Type: 1 name, 2 phone, 3 email, 4, birthday, 0 back to main menu: ')
         if answer in EDIT_COMMANDS.keys():
             handler = get_edit_handler(answer)
             handler(addresbook, record)
