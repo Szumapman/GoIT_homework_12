@@ -239,6 +239,7 @@ def show_all(addresbook):
                 print(f"emails:\n{record.show_emails()}")
             if record.birthday is not None:
                 print(f"birthday: {record.birthday}")
+                print(f"Day(s) to next birthday: {record.days_to_birthday()}")
             i += 1           
              
 # dict for main menu handler

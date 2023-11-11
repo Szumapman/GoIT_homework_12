@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 from utility.name import Name
 from utility.phone import Phone
 from utility.email import Email
@@ -105,3 +106,16 @@ class Record:
     @birthday.setter
     def birthday(self, birthday):
         self._birthday = birthday
+        
+    def days_to_birthday(self):
+        current_date = datetime.now().date()
+        this_year_birthday = datetime(year=current_date.year, month=self.birthday.value.month, day=self.birthday.value.day).date()
+        difference = this_year_birthday - current_date
+        if difference.days == 0:
+            return f"{self.name}'s birthday is today!"
+        elif difference.days > 0: # if the birthday is before this year's end
+            return difference.days
+        # if the next birthday is in next year
+        next_birthday = datetime(year=this_year_birthday.year+1, month=this_year_birthday.month, day=this_year_birthday.day).date()
+        return (next_birthday -  current_date).days
+        
