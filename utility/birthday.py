@@ -5,12 +5,9 @@ class FutureDateException(Exception):
     pass
     
 class Birthday(Field):
-        
+         
     def __init__(self, value=None) -> None:
-        birthday = datetime.strptime(value.strip().replace(".", " ").replace("/", " ").replace("-", " ").replace(".", " "), '%d %m %Y')
-        if birthday is not None and birthday > datetime.now():
-            raise FutureDateException 
-        self._value = birthday
+        self._value = self.set_birthdate(value)
         
         # Getter for value
     @property
@@ -19,12 +16,17 @@ class Birthday(Field):
          
     # Setter for value   
     @value.setter
-    def value(self, value: str):
-        birthday = datetime.strptime(value.strip().replace(".", " ").replace("/", " ").replace("-", " ").replace(".", " "), '%d %m %Y')
-        if birthday is not None and birthday > datetime.now():
-            raise FutureDateException 
-        self._value = birthday
+    def value(self, value: str): 
+        self._value = self.set_birthdate(value)
         
     # overridden method __repr__    
     def __repr__(self) -> str:
         return self._value.strftime('%A %d-%m-%Y')
+    
+    def set_birthdate(self, value):
+        if value is None:
+            return None
+        birthday = datetime.strptime(value.strip().replace(".", " ").replace("/", " ").replace("-", " ").replace(".", " "), '%d %m %Y')
+        if birthday is not None and birthday > datetime.now():
+            raise FutureDateException
+        return birthday 
