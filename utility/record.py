@@ -1,15 +1,17 @@
 from utility.name import Name
 from utility.phone import Phone
 from utility.email import Email
+from utility.birthday import Birthday
 
 class Record:
     """
     Record class represents a single address book record consisting of name, phone list and email list
     """
-    def __init__(self, name: Name, phones=[], emails=[]) -> None:
+    def __init__(self, name: Name, phones=[], emails=[], birthday=None) -> None:
         self._name = name
         self._phones = phones
         self._emails = emails
+        self._birthday = birthday
         
     # Getter for name
     @property
@@ -26,6 +28,11 @@ class Record:
     def emails(self):
         return self._emails
     
+    # Getter for birthday
+    @property
+    def birthday(self):
+        return self._birthday
+    
     # Setter name
     @name.setter
     def name(self, name):
@@ -35,13 +42,17 @@ class Record:
     @phones.setter
     def phones(self, phones):
         self._phones = phones
-    
-        
+       
     # Setter emails
     @emails.setter
     def emails(self, emails):
         self._emails = emails
-    
+
+    # Setter birthday
+    @birthday.setter
+    def birthday(self, birthday):
+        self._birthday = birthday
+        
     # Add phone to phones list    
     def add_phone(self, phone: Phone):
         self._phones.append(phone)
@@ -50,7 +61,7 @@ class Record:
     def remove_phone(self, phone: Phone):
         self._phones.remove(phone)
     
-    # Change phone - add new one an dremove old one
+    # Change phone - add new one and remove old one
     def change_phone(self, old_phone, new_phone):
         index = self._phones.index(old_phone)
         self._phones[index] = new_phone
