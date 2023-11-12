@@ -5,26 +5,27 @@ from utility.record import Record
 
 class AddresBook(UserDict):
     """
-    The Record class extends the UserDict class by adding the add_record method 
-    and checking that the items added to the dictionary are valid (keys and values based on the Record class). 
+    The Record class extends the UserDict class by adding the add_record method
+    and checking that the items added to the dictionary are valid (keys and values based on the Record class).
 
     Args:
         UserDict (class): parent class
     """
-    
+
     # function used as a decorator to catch errors when item is adding to addresbook
     def _value_error(func):
         def inner(self, record):
             if not isinstance(record, Record):
                 raise ValueError
             return func(self, record)
+
         return inner
-    
+
     # Add record to addresbook
     @_value_error
     def add_record(self, record: Record):
         self.data[record.name.value] = record
-    
+
     # Return all names (keys) from addresbook as formated string
     def show_names(self):
         names = []
@@ -32,7 +33,7 @@ class AddresBook(UserDict):
             names.append(key)
         names.sort()
         return "\n".join(names)
-    
+
     # implementation of the iterator method which returns a generator
     def iterator(self, no_of_contacts_to_return=3):
         if len(self.data) > 0:
@@ -40,13 +41,15 @@ class AddresBook(UserDict):
             i = 1
             records_info = ""
             for record in self.values():
-                records_info += f"{i}. {record.name}" 
+                records_info += f"{i}. {record.name}"
                 if len(record.phones) > 0:
                     records_info += f"\nphones:{record.show_phones()}"
                 if len(record.emails) > 0:
                     records_info += f"\nemails:{record.show_emails()}"
                 if record.birthday is not None:
-                    records_info += f"\nbirthday: {record.birthday}, {record.days_to_birthday()}"
+                    records_info += (
+                        f"\nbirthday: {record.birthday}, {record.days_to_birthday()}"
+                    )
                 records_info += "\n-------------\n"
                 i += 1
                 if current_record_no >= no_of_contacts_to_return:
@@ -57,9 +60,4 @@ class AddresBook(UserDict):
                 current_record_no += 1
             yield records_info
         else:
-            yield "Your addresbook is empty.\n"            
-
-    
-
-    
-    
+            yield "Your addresbook is empty.\n"
