@@ -48,7 +48,7 @@ class AddresBook(UserDict):
                     records_info += f"\nemails:{record.show_emails()}"
                 if record.birthday is not None:
                     records_info += (
-                        f"\nbirthday: {record.birthday}, {record.days_to_birthday()}"
+                        f"\nbirthday:\n{record.birthday}\n{record.days_to_birthday()}"
                     )
                 records_info += "\n-------------\n"
                 i += 1
@@ -58,6 +58,6 @@ class AddresBook(UserDict):
                     records_info = ""
                     continue
                 current_record_no += 1
-            yield records_info
+            yield records_info  # returns the rest if there are no more records and record_no < no_of_contacts_to_return
         else:
             yield "Your addresbook is empty.\n"
