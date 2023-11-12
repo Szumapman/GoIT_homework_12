@@ -33,6 +33,33 @@ class AddresBook(UserDict):
         names.sort()
         return "\n".join(names)
     
+    # implementation of the iterator method which returns a generator
+    def iterator(self, no_of_contacts_to_return=3):
+        if len(self.data) > 0:
+            current_record_no = 1
+            i = 1
+            records_info = ""
+            for record in self.values():
+                records_info += f"{i}. {record.name}" 
+                if len(record.phones) > 0:
+                    records_info += f"\nphones:{record.show_phones()}"
+                if len(record.emails) > 0:
+                    records_info += f"\nemails:{record.show_emails()}"
+                if record.birthday is not None:
+                    records_info += f"\nbirthday: {record.birthday}, {record.days_to_birthday()}"
+                records_info += "\n-------------\n"
+                i += 1
+                if current_record_no >= no_of_contacts_to_return:
+                    yield records_info
+                    current_record_no = 1
+                    records_info = ""
+                    continue
+                current_record_no += 1
+            yield records_info
+        else:
+            yield "Your addresbook is empty.\n"            
+
+    
 
     
     

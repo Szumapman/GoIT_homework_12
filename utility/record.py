@@ -58,7 +58,7 @@ class Record:
         phones_str = ""
         i = 1
         for phone in self._phones:
-            phones_str += f"{i}) {phone};\n"
+            phones_str += f"\n{i}) {phone};"
             i += 1
         return phones_str
 
@@ -91,7 +91,7 @@ class Record:
         emails_str = ""
         i = 1
         for email in self._emails:
-            emails_str += f"{i}) {email};\n"
+            emails_str += f"\n{i}) {email};"
             i += 1
         return emails_str
     
@@ -114,8 +114,8 @@ class Record:
         if difference.days == 0:
             return f"{self.name}'s birthday is today!"
         elif difference.days > 0: # if the birthday is before this year's end
-            return difference.days
+            return f"day(s) to next birthday: {difference.days}"
         # if the next birthday is in next year
         next_birthday = datetime(year=this_year_birthday.year+1, month=this_year_birthday.month, day=this_year_birthday.day).date()
-        return (next_birthday -  current_date).days
+        return f"day(s) to next birthday: {(next_birthday -  current_date).days}"
         

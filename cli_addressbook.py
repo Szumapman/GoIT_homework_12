@@ -5,7 +5,7 @@ from utility.record import Record
 from utility.name import Name
 from utility.phone import Phone
 from utility.email import Email
-from utility.birthday import Birthday, FutureDateException
+from utility.birthday import Birthday, FutureDateError
 
 # hendler for main menu
 def get_main_handler(command):
@@ -33,7 +33,7 @@ def input_error(func: Callable):
                     print("Invalid email, try again.")
                 if func.__name__=="add_birthday":
                     print("Invalid date format, try again.")
-            except FutureDateException:
+            except FutureDateError:
                 print("You can't use a future date as a birthday, try again.")
     return wrapper   
 
@@ -227,20 +227,10 @@ def delete_record(addresbook):
         
 # show all data in addresbook
 def show_all(addresbook):
-    if len(addresbook) == 0:
-        print("Your addresbook is empty.")
-    else:
-        i = 1
-        for record in addresbook.values():
-            print(f"{i}. {record.name}")
-            if len(record.phones) > 0:
-                print(f"phones:\n{record.show_phones()}")
-            if len(record.emails) > 0:
-                print(f"emails:\n{record.show_emails()}")
-            if record.birthday is not None:
-                print(f"birthday: {record.birthday}")
-                print(f"Day(s) to next birthday: {record.days_to_birthday()}")
-            i += 1           
+    for info in addresbook.iterator():
+        print(info, end="")
+        input("Press Enter to continue. ")
+        
              
 # dict for main menu handler
 MAIN_COMMANDS = {
