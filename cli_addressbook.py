@@ -272,6 +272,9 @@ def show_all(addresbook):
         print(info, end="")
         input("Press Enter to continue. ")
 
+# save addresbook to file
+def save_data(addresbook):
+    addresbook.save_addresbook(ADDRESBOOK_DATA_PATH)
 
 # dict for main menu handler
 MAIN_COMMANDS = {
@@ -280,6 +283,7 @@ MAIN_COMMANDS = {
     "2": edit_record,
     "3": delete_record,
     "4": show_all,
+    "5": save_data,
 }
 
 
@@ -288,12 +292,13 @@ def main():
 
     while True:
         print(
-            "{:<20} | {:^10} | {:^10} | {:^10} | {:^10} | {:^10}".format(
+            "{:<20} | {:^10} | {:^10} | {:^10} | {:^10} | {:^10} | {:^10}".format(
                 "Type command (number): ",
                 "1 add",
                 "2 edit",
                 "3 delete",
                 "4 show all",
+                "5 save data",
                 "0 exit",
             )
         )
