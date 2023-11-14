@@ -1,3 +1,6 @@
+import pickle
+# from os import path 
+from pathlib import Path
 from collections import UserDict
 
 from utility.record import Record
@@ -61,3 +64,14 @@ class AddresBook(UserDict):
             yield records_info  # returns the rest if there are no more records and record_no < no_of_contacts_to_return
         else:
             yield "Your addresbook is empty.\n"
+
+    def save_addresbook(self, filename):
+        with open(filename, "wb") as fh:
+            pickle.dump(self, fh)
+            
+    def load_addresbook(self, filename):
+        if Path.exists(Path(filename)):
+        # if path.exists()
+            with open(filename, "rb") as fh:
+                return pickle.load(fh)
+        return self

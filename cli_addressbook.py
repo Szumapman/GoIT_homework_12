@@ -1,4 +1,5 @@
 import sys
+import os
 from typing import Callable
 from utility.addressbook import AddresBook
 from utility.record import Record
@@ -7,6 +8,7 @@ from utility.phone import Phone
 from utility.email import Email
 from utility.birthday import Birthday, FutureDateError
 
+ADDRESBOOK_DATA_PATH = os.path.join(os.getcwd(), "addresbook.dat")
 
 # hendler for main menu
 def get_main_handler(command):
@@ -19,7 +21,9 @@ def get_edit_handler(command):
 
 
 # exit / close program
-def cli_addresbook_exit(*args):
+def cli_addresbook_exit(addresbook):
+    addresbook.save_addresbook(ADDRESBOOK_DATA_PATH)
+    print("Your address book has been saved.")
     sys.exit("Good bye!")
 
 
@@ -280,7 +284,8 @@ MAIN_COMMANDS = {
 
 
 def main():
-    adressbook = AddresBook()
+    adressbook = AddresBook().load_addresbook(ADDRESBOOK_DATA_PATH)
+
     while True:
         print(
             "{:<20} | {:^10} | {:^10} | {:^10} | {:^10} | {:^10}".format(
