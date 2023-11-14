@@ -169,7 +169,7 @@ def change_data(record, type):
         if len(data_list) > 0:
             while True:
                 answer = input(
-                    f"Contact {record.name} {type}s:\n{show}Do you want change it or add another? 1 chanege, 2 add, 3 delete: "
+                    f"Contact {record.name} {type}s:{show}\nDo you want change it or add another? 1 chanege, 2 add, 3 delete: "
                 )
                 if answer == "1":
                     if len(data_list) == 1:
@@ -212,12 +212,12 @@ def change_data(record, type):
 
 
 # init function for phone changed
-def edit_phone(record):
+def edit_phone(addresbook, record):
     change_data(record, "phone")
 
 
 # init function for email changed
-def edit_email(record):
+def edit_email(addresbook, record):
     change_data(record, "email")
 
 
@@ -272,6 +272,10 @@ def show_all(addresbook):
         print(info, end="")
         input("Press Enter to continue. ")
 
+# search data in addresbok
+def search(addresbook):
+    show_all(addresbook.search(input("search: ")))
+        
 # save addresbook to file
 def save_data(addresbook):
     addresbook.save_addresbook(ADDRESBOOK_DATA_PATH)
@@ -283,7 +287,8 @@ MAIN_COMMANDS = {
     "2": edit_record,
     "3": delete_record,
     "4": show_all,
-    "5": save_data,
+    "5": search,
+    "6": save_data,
 }
 
 
@@ -292,13 +297,15 @@ def main():
 
     while True:
         print(
-            "{:<20} | {:^10} | {:^10} | {:^10} | {:^10} | {:^10} | {:^10}".format(
+            "{:<20} | {:^10} | {:^10} | {:^10} | {:^10} | {:^10} | {:^10} | {:^10} | {:^10}".format(
                 "Type command (number): ",
                 "1 add",
                 "2 edit",
                 "3 delete",
                 "4 show all",
-                "5 save data",
+                "5 search",
+                "6 save data",
+                "7 export to csv",
                 "0 exit",
             )
         )
