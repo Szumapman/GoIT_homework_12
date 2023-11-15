@@ -276,7 +276,7 @@ def delete_record(addresbook):
 def show_all(addresbook):
     for info in addresbook.iterator():
         print(info, end="")
-        # input("Press Enter to continue. ") # added for pagination
+        input("Press Enter to continue. ") # added for pagination
 
 # search data in addresbok
 def search(addresbook):
@@ -288,6 +288,7 @@ def save_data(addresbook):
     print("Your addresbook has been saved.")
     
 # export addresbook to csv file
+@input_error 
 def export_to_csv(addresbook):
     if len(addresbook) > 0:
         addresbook.export_to_csv(os.path.join(os.getcwd(), "addresbook.csv")) # Because it's a simple program. The path is hard coded ;)
@@ -298,6 +299,7 @@ def export_to_csv(addresbook):
 # import from csv
 @input_error
 def import_from_csv(addresbook):
+    print(os.path.join(os.getcwd(), "addresbook.csv"))
     addresbook.import_from_csv(os.path.join(os.getcwd(), "addresbook.csv")) # Because it's a simple program. The path is hard coded ;)
 
       
@@ -320,7 +322,7 @@ def main():
 
     while True:
         print(
-            "{:<20} | {:^10} | {:^10} | {:^10} | {:^10} | {:^10} | {:^10} | {:^10} | {:^10} | {:^10}".format(
+            "{:<18} | {:^10} | {:^10} | {:^10} | {:^10} | {:^10} | {:^10} | {:^10} | {:^10} | {:^10}".format(
                 "Type command (number): ",
                 "1 add",
                 "2 edit",

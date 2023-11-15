@@ -138,11 +138,19 @@ class AddresBook(UserDict):
                 
                     
     # import from csv file
+    """
+    The method imports data into a csv file. 
+    
+    Data structures in the file:
+    name,phones,emails,birthsday
+    
+    Phones and emails are separated (if there is more than one phone or email) with "|".
+    Birthday should be written as: day month year e.g. 21 12 1999 or 30-01-2012 or 09/01/1987
+    """
     def import_from_csv(self, filename):
         with open(filename, 'r', newline='') as fh:
             reader = csv.DictReader(fh)
             for row in reader:
-                print(row)
                 name = row['name']
                 phones = row['phones'].split('|')
                 phones_to_add = []
@@ -154,7 +162,10 @@ class AddresBook(UserDict):
                 for email in emails:
                     if email is not '':
                         emails_to_add.append(Email(email))
-                birthday = Birthday(row['birthday'])
+                birthday = row['birthday']
                 if birthday is not '':
-                    self.add_record(Record(Name(name), phones_to_add, emails_to_add, birthday))
+                    birthday = Birthday(birthday)
+                else:
+                    birthday = None    
+                self.add_record(Record(Name(name), phones_to_add, emails_to_add, birthday))
                     
