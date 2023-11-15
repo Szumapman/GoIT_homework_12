@@ -1,8 +1,15 @@
 import pickle 
+import csv
 from pathlib import Path
+from datetime import datetime
+
 from collections import UserDict
 
 from utility.record import Record
+from utility.name import Name
+from utility.phone import Phone
+from utility.email import Email
+from utility.birthday import Birthday
 
 
 class AddresBook(UserDict):
@@ -104,3 +111,50 @@ class AddresBook(UserDict):
                     query_addresbook[record.name.value] = record
         return query_addresbook
             
+       
+    # export records form addresbook to csv file
+    """
+    The method exports the data to a csv file. Phones and emails are separated by the '|' char.
+    """
+    def export_to_csv(self, filename):
+        if len(self.data) > 0:
+            with open(filename, 'w', newline='') as fh:
+                field_names = ['name', 'phones', 'emails', 'birthday']
+                writer = csv.DictWriter(fh, fieldnames=field_names)
+                writer.writeheader()
+                for record in self.data.values():
+                    record_dict = {'name': record.name.value}
+                    phones = []
+                    for phone in record.phones:
+                        phones.append(phone.value)
+                    record_dict['phones'] = '|'.join(phones)
+                    emails = []
+                    for email in record.emails:
+                        emails.append(email.value)
+                    record_dict['emails'] = '|'.join(emails)
+                    if record.birthday is not None:
+                        record_dict['birthday'] = record.birthday.value.strftime("%d %m %Y")
+                    writer.writerow(record_dict)
+                
+                    
+    # import from csv file
+    def import_from_csv(self, filename):
+        with open(filename, 'r', newline='') as fh:
+            reader = csv.DictReader(fh)
+            for row in reader:
+                print(row)
+                name = row['name']
+                phones = row['phones'].split('|')
+                phones_to_add = []
+                for phone in phones:
+                    if phone is not '':
+                        phones_to_add.append(Phone(phone))
+                emails = row['emails'].split('|')
+                emails_to_add = []
+                for email in emails:
+                    if email is not '':
+                        emails_to_add.append(Email(email))
+                birthday = Birthday(row['birthday'])
+                if birthday is not '':
+                    self.add_record(Record(Name(name), phones_to_add, emails_to_add, birthday))
+                    

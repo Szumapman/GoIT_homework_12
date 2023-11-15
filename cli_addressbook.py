@@ -8,7 +8,7 @@ from utility.phone import Phone
 from utility.email import Email
 from utility.birthday import Birthday, FutureDateError
 
-ADDRESBOOK_DATA_PATH = os.path.join(os.getcwd(), "addresbook.dat")
+ADDRESBOOK_DATA_PATH = os.path.join(os.getcwd(), "addresbook.dat") # Because it's a simple program. The path is hard coded ;)
 
 # hendler for main menu
 def get_main_handler(command):
@@ -23,7 +23,7 @@ def get_edit_handler(command):
 # exit / close program
 def cli_addresbook_exit(addresbook):
     addresbook.save_addresbook(ADDRESBOOK_DATA_PATH)
-    print("Your address book has been saved.")
+    print("Your addresbook has been saved.")
     sys.exit("Good bye!")
 
 
@@ -41,8 +41,14 @@ def input_error(func: Callable):
                     print("Invalid email, try again.")
                 if func.__name__ == "add_birthday":
                     print("Invalid date format, try again.")
+                if func.__name__ == "import_from_csv":
+                    print("I can't import from this source. Check the file.")
+                    break
             except FutureDateError:
                 print("You can't use a future date as a birthday, try again.")
+            except FileNotFoundError:
+                print("I can't find file to import data.")
+                break
 
     return wrapper
 
@@ -270,7 +276,7 @@ def delete_record(addresbook):
 def show_all(addresbook):
     for info in addresbook.iterator():
         print(info, end="")
-        input("Press Enter to continue. ")
+        # input("Press Enter to continue. ") # added for pagination
 
 # search data in addresbok
 def search(addresbook):
@@ -279,7 +285,22 @@ def search(addresbook):
 # save addresbook to file
 def save_data(addresbook):
     addresbook.save_addresbook(ADDRESBOOK_DATA_PATH)
+    print("Your addresbook has been saved.")
+    
+# export addresbook to csv file
+def export_to_csv(addresbook):
+    if len(addresbook) > 0:
+        addresbook.export_to_csv(os.path.join(os.getcwd(), "addresbook.csv")) # Because it's a simple program. The path is hard coded ;)
+        print(f"Your addresbook has been exported to: {os.path.join(os.getcwd(), 'addresbook.csv')}") # Because it's a simple program. The path is hard coded ;)
+    else:
+        print("No data to export.")
+        
+# import from csv
+@input_error
+def import_from_csv(addresbook):
+    addresbook.import_from_csv(os.path.join(os.getcwd(), "addresbook.csv")) # Because it's a simple program. The path is hard coded ;)
 
+      
 # dict for main menu handler
 MAIN_COMMANDS = {
     "0": cli_addresbook_exit,
@@ -289,6 +310,8 @@ MAIN_COMMANDS = {
     "4": show_all,
     "5": search,
     "6": save_data,
+    "7": export_to_csv,
+    "8": import_from_csv,
 }
 
 
@@ -297,7 +320,7 @@ def main():
 
     while True:
         print(
-            "{:<20} | {:^10} | {:^10} | {:^10} | {:^10} | {:^10} | {:^10} | {:^10} | {:^10}".format(
+            "{:<20} | {:^10} | {:^10} | {:^10} | {:^10} | {:^10} | {:^10} | {:^10} | {:^10} | {:^10}".format(
                 "Type command (number): ",
                 "1 add",
                 "2 edit",
@@ -306,6 +329,7 @@ def main():
                 "5 search",
                 "6 save data",
                 "7 export to csv",
+                "8 import from csv",
                 "0 exit",
             )
         )
